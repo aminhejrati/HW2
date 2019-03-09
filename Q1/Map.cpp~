@@ -1,0 +1,148 @@
+#include<iostream>
+#include<cstdlib>
+#include<iomanip>
+#include<vector>
+#include"Map.h"
+
+Map::Map(int n){
+   srand(time(NULL));
+  for(int i{} ; i < n ; i++)
+    {
+      for(int j{} ; j < n ; j++)
+	{
+	  submap.push_back(rand() % 101);
+	  subroute.push_back('-');
+	}
+      map.push_back(submap);
+      submap.clear();
+      route.push_back(subroute);
+      subroute.clear();
+    }
+  N = n;
+}
+
+void Map::showMap(){
+  for(int i{}; i < N ; i++)
+    {
+    for(int j{}; j < N ; j++)
+      std::cout << std::setw(5) << map[i][j];
+    std::cout << " " << std::endl; 
+    }
+}
+
+void Map::findRoute1(){
+  for(int i{} ; i < N ; i++)
+      for(int j{} ; j < N ; j++)
+	route[i][j] = '-';
+  int i{ 0 };
+  int j{ 0 };
+  int right{ abs(map[0][1] - map[0][0]) };
+  int down{ abs(map[1][0] - map[0][0]) };
+  route[i][j] = '*';
+  d = 0;
+  flag = true;
+  while(flag)
+    {
+      if(i == (N-1))
+	{
+	  right = abs(map[i][j + 1] - map[i][j]);
+	  d += right;
+	  j++;
+	}
+      else if(j == (N-1))
+	{
+	  down = abs(map[i + 1][j] - map[i][j]);
+	  d += down;
+	  i++;
+	}
+      else
+	{
+	  right = abs(map[i][j + 1] - map[i][j]);
+	  down = abs(map[i + 1][j] - map[i][j]);
+	  if(right > down)
+	    {
+	      d += down;
+	      i++;
+	    }
+	  else
+	    {
+	      d += right;
+	      j++;
+	    }
+	}
+      route[i][j] = '*' ;
+      if(i == (N-1) && j == (N-1))
+	flag = false;
+    }
+  std::cout << "Distance: " << d << std::endl;
+}
+
+void Map::findRoute2(){
+  for(int x{} ; x < N ; x++)
+      for(int y{} ; y < N ; y++)
+	route[x][y] = '-';
+   int i{ 0 };
+   int j{ 0 };
+   int right{ abs(map[0][1] - map[0][0]) };
+   int down{ abs(map[1][0] - map[0][0]) };
+   int diameter{ abs(map[1][1] - map[0][0]) };
+   route[i][j] = '*';
+   d = 0;
+   flag = true;
+   while(flag)
+    {
+      if(i == (N-1))
+	{
+	  right = abs(map[i][j + 1] - map[i][j]);
+	  d += right;
+	  j++;
+	}
+      else if(j == (N-1))
+	{
+	  down = abs(map[i + 1][j] - map[i][j]);
+	  d += down;
+	  i++;
+	}
+      else
+	{
+	  right = abs(map[i][j + 1] - map[i][j]);
+	  down = abs(map[i + 1][j] - map[i][j]);
+	  diameter = abs(map[i + 1][j + 1] - map[i][j]);
+	  if((right > diameter) && (down > diameter))
+	    {
+	      d += diameter;
+	      i++;
+	      j++;
+	    }
+	  else if(down > right)
+	    {
+	      d += right;
+	      j++;
+	    }
+	  else
+	    {
+	      d += down;
+	      i++;
+	    }
+	}
+      route[i][j] = '*' ;
+      if(i == (N-1) && j == (N-1))
+	flag = false;
+    }
+  std::cout << "Distance: " << d << std::endl;
+}
+/*findRoute3(){
+  for(int x{} ; x < N ; x++)
+      for(int y{} ; y < N ; y++)
+	route[x][y] = '-';
+  
+  
+	}*/
+void Map::showRoute(){
+  for(int i{}; i < N ; i++)
+    {
+    for(int j{}; j < N ; j++)
+      std::cout << std::setw(5) << route[i][j];
+    std::cout << " " << std::endl; 
+    }
+}

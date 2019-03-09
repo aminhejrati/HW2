@@ -1,0 +1,18 @@
+class Map{
+ public:
+  
+  Map(int);
+  void showMap();
+  void findRoute1();
+  void findRoute2();
+  // void findRoute3();
+  void showRoute();
+ private:
+  int N{};
+  int d{};
+  std::vector<std::vector<int>> map{};
+  std::vector<int> submap{};
+  std::vector<std::vector<char>> route{};
+  std::vector<char> subroute{};
+  bool flag{};
+};
